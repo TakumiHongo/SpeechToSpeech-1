@@ -1,6 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
- * Copyright 2015 IBM Corp. All Rights Reserved.
+ * Copyright 2014 IBM Corp. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
@@ -141,11 +141,11 @@ Microphone.prototype.stop = function() {
   if (!this.recording)
     return;
   this.recording = false;
-  // this.stream.stop();
+  this.stream.stop();
   this.requestedAccess = false;
   this.mic.disconnect(0);
   this.mic = null;
-  this.onStopRecording(); 
+  this.onStopRecording();
 };
 
 /**
@@ -261,62 +261,47 @@ module.exports = Microphone;
 module.exports={
    "models": [
       {
-         "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/ar-AR_BroadbandModel", 
-         "rate": 16000, 
-         "name": "ar-AR_BroadbandModel", 
-         "language": "ar-AR", 
-         "description": "Arabic" 
-      }, 
-	  {
-         "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/pt-BR_BroadbandModel",
-         "rate": 16000,
-         "name": "pt-BR_BroadbandModel",
-         "language": "pt-BR",
-         "description": "Brazilian Portuguese"
-      },
-      {
          "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/en-US_BroadbandModel", 
          "rate": 16000, 
          "name": "en-US_BroadbandModel", 
          "language": "en-US", 
-         "description": "English" // "description": "US English broadband model (16KHz)"
+         "description": "US English broadband model (16KHz)"
       }, 
-      //{
-      //   "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/en-US_NarrowbandModel", 
-      //   "rate": 8000, 
-      //   "name": "en-US_NarrowbandModel", 
-      //   "language": "en-US", 
-      //   "description": "US English narrowband model (8KHz)"
-      //},
+      {
+         "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/en-US_NarrowbandModel", 
+         "rate": 8000, 
+         "name": "en-US_NarrowbandModel", 
+         "language": "en-US", 
+         "description": "US English narrowband model (8KHz)"
+      },
       {
          "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/es-ES_BroadbandModel", 
          "rate": 16000, 
          "name": "es-ES_BroadbandModel", 
          "language": "es-ES", 
-         "description": "Spanish" // "description": "Spanish broadband model (16KHz)"
+         "description": "Spanish broadband model (16KHz)"
       }, 
-      //{
-      //   "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/es-ES_NarrowbandModel", 
-      //   "rate": 8000, 
-      //   "name": "es-ES_NarrowbandModel", 
-      //   "language": "es-ES", 
-      //   "description": "Spanish narrowband model (8KHz)"
-      //}, 
-      // activated Japanese model by Taiji
+      {
+         "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/es-ES_NarrowbandModel", 
+         "rate": 8000, 
+         "name": "es-ES_NarrowbandModel", 
+         "language": "es-ES", 
+         "description": "Spanish narrowband model (8KHz)"
+      }, 
       {
          "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/ja-JP_BroadbandModel", 
          "rate": 16000, 
          "name": "ja-JP_BroadbandModel", 
          "language": "ja-JP", 
-         "description": "Japanese"
+         "description": "Japanese broadband model (16KHz)"
       }, 
-      //{
-      //   "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/ja-JP_NarrowbandModel", 
-      //   "rate": 8000, 
-      //   "name": "ja-JP_NarrowbandModel", 
-      //   "language": "ja-JP", 
-      //   "description": "Japanese narrowband model (8KHz)"
-      //}
+      {
+         "url": "https://stream.watsonplatform.net/speech-to-text/api/v1/models/ja-JP_NarrowbandModel", 
+         "rate": 8000, 
+         "name": "ja-JP_NarrowbandModel", 
+         "language": "ja-JP", 
+         "description": "Japanese narrowband model (8KHz)"
+      }
    ]
 }
 
@@ -916,186 +901,10 @@ var initTextScroll = function() {
 
 function updateScroll(){
   if(!scrolled){
-  // L.R.
-  //  var element = $('.table-scroll').get(0);
-  //  element.scrollTop = element.scrollHeight;
+    var element = $('.table-scroll').get(0);
+    element.scrollTop = element.scrollHeight;
   }
 }
-
-// L.R.
-// --------------------------------- MT & TTS ----------------------------------------
-function getVoice() {
-	var mt_target = getTargetLanguageCode();
-	var voice = '';
-	if(mt_target == 'en')
-		voice = 'en-US_MichaelVoice'; // TODO: try 'en-US_AllisonVoice' or 'en-US_LisaVoice'
-	else if(mt_target == 'fr')
-		voice = 'fr-FR_ReneeVoice';
-	else if(mt_target == 'es')
-		voice = 'es-US_SofiaVoice';   // TODO: try 'es-ES_EnriqueVoice' or 'es-ES_LauraVoice'
-	else if(mt_target == 'pt')
-		voice = 'pt-BR_IsabelaVoice';
-	else if(mt_target == 'ja')      // activated Japanese model by Taiji
-		voice = 'ja-JP_EmiVoice';
-
-	return voice;
-}
-
-function TTS(textToSynthesize) {
-	console.log('text to synthesize: ---> ' + textToSynthesize);
-	var voice = getVoice();
-	if(voice == '') 
-		return;
-	synthesizeRequest(textToSynthesize, voice);
-}
-
-function getTargetLanguageCode() {
-	var lang = $('#dropdownMenuTargetLanguageDefault').text();
-	var mt_target = 'en'; // default
-	if( lang == 'English' )
-	    mt_target = 'en';
-	else if( lang == 'French' )
-	    mt_target = 'fr';
-	else if( lang == 'Spanish' )
-	    mt_target = 'es';
-	else if( lang == 'Portuguese' )
-	    mt_target = 'pt';
-	else if( lang == 'Japanese' )    // activated Japanese model by Taiji
-	    mt_target = 'ja';
-	return mt_target;
-}
-
-function translate(textContent) {
-	// 1. get current speech-to-text model, extract its two first letters, and lower case them.
-	var currentModel = localStorage.getItem('currentModel') || 'en-US_BroadbandModel';
-	var mt_source = currentModel.substring(0, 2).toLowerCase();
-
-	// 2. get target language code to translate to	
-	var lang = $('#dropdownMenuTargetLanguageDefault').text();
-	var mt_target = getTargetLanguageCode();
-		
-	// call language translation service if mt_source != mt_target, otherwise jump to TTS
-	if(mt_source != mt_target) {
-		// var mid = mt_source + "-" + mt_target; // default domain is 'news'
-	  //var mid = mt_source + "-" + mt_target + "-conversational";
-		
-    // activated Japanese model by Taiji
-    // available to use only "news" domain for Japanese language
-    // not need suffix for news domain, others need it
-		if(mt_source == "ja" || mt_target == "ja"){
-		    var mid = mt_source + "-" + mt_target;
-		}else{
-	    	var mid = mt_source + "-" + mt_target + "-conversational";			
-		}
-		
-		var callData = {
-			model_id: mid,
-			text: textContent
-		};
-	
-		var restAPICall = {
-			type: 'POST',
-			url: "/api/translate",
-			data: callData,
-			headers: {
-				'X-WDC-PL-OPT-OUT': '0'
-			},
-			async: true
-		};
-	
-		$.ajax(restAPICall)
-			.done(function(data) {
-				var translation = data['translations'][0]['translation'];
-				$('#translation textarea').val(function(_, val){
-				    var delimiter = val.length > 0 ? ". " : "";
-					return val + delimiter + translation; 
-				}); 
-				TTS(translation);
-			})
-			.fail(function(jqXHR, statustext, errorthrown) {
-				console.log(statustext + errorthrown);
-			});
-	}
-	else {
-		$('#translation textarea').val(textContent);
-		TTS(textContent);
-	}
-}
-
-var ttsAudio = $('.audio-tts').get(0);
-
-$('#playTTS').click(function() {
-  var textContent = $('#resultsText').val();
-  $('#translation textarea').val('');
-  translate(textContent);
-  
-  /*
-  var downloadURL = '/synthesize' + '?voice=' + getVoice() +
-    '&text=' + encodeURIComponent($('#translation textarea').val()) +
-    '&X-WDC-PL-OPT-OUT=0';
-  
-  ttsAudio.currentTime = 0;
-  ttsAudio.pause();
-  ttsAudio.src = downloadURL;
-  ttsAudio.load();
-  ttsAudio.play();
-  */
-});
-
-$('#stopTTS').click(function() {
-	ttsAudio.pause();
-});
-
-window.ttsChunks = new Array();
-window.ttsChunksIndex = 0;
-window.inputSpeechOn = false;
-
-var timerStarted = false;
-var timerID;
-
-var playTTSChunk = function() {
-	if(ttsChunksIndex >= ttsChunks.length)
-		return;
-		
-	var downloadURL = ttsChunks[ttsChunksIndex];
-	ttsChunksIndex = ttsChunksIndex + 1;
-	
-	ttsAudio.src = downloadURL;
-	ttsAudio.load();
-	ttsAudio.play();
-}
-
-ttsAudio.addEventListener('ended', playTTSChunk);
-
-function playTTSifInputSpeechIsOff() {
-	clearTimeout(timerID);
-	var streaming = $('#microphone_streaming').prop('checked');
-	
-	if(streaming== false && inputSpeechOn == true || ttsAudio.paused == false) {
-		timerID = setTimeout(playTTSifInputSpeechIsOff, 100);
-		timerStarted = true;
-	}
-	else {
-		timerStarted = false;
-		playTTSChunk();
-	}
-}
-
-function synthesizeRequest(text, v) {
-	var downloadURL = '/synthesize' +
-	  '?voice=' + v +
-	  '&text=' + encodeURIComponent(text) +
-	  '&X-WDC-PL-OPT-OUT=0';
-	
-	ttsChunks.push(downloadURL);
-	
-	if(timerStarted == false) {
-		timerID = setTimeout(playTTSifInputSpeechIsOff, 300);
-		timerStarted = true;
-	}
-}
-
-// ------------------------------------------------------------------------------------
 
 var initScroll = function() {
   $('.table-scroll').on('scroll', function(){
@@ -1117,11 +926,8 @@ exports.showResult = function(msg, baseString, callback) {
 
     var alternatives = msg.results[0].alternatives;
     var text = msg.results[0].alternatives[0].transcript || '';
-    
-	// L.R.
-	// console.log('transcription: ---> ' + text);
 
-    // Capitalize first word
+    //Capitalize first word
     // if final results, append a new paragraph
     if (msg.results && msg.results[0] && msg.results[0].final) {
       baseString += text;
@@ -1129,18 +935,10 @@ exports.showResult = function(msg, baseString, callback) {
       displayFinalString = displayFinalString.replace(/%HESITATION\s/g, '');
       displayFinalString = displayFinalString.replace(/(.)\1{2,}/g, '');
       processString(displayFinalString, true);
-	  
-	  // HACK to ignore nn, nnn, nnnn sequences !!!
-	  console.log('---> reco=' + text);
-	  var res = text.match("([n]{2,} )");
-	  if(res == null) { 
-		translate(text);
-	  }
-	  else {
-		console.log('---> translation step is skipped for text=' + text);
-	  }
-    } 
-	else {
+      showMetaData(alternatives[0]);
+      // Only show alternatives if we're final
+      alternativePrototype.showAlternatives(alternatives);
+    } else {
       var tempString = baseString + text;
       tempString = tempString.replace(/%HESITATION\s/g, '');
       tempString = tempString.replace(/(.)\1{2,}/g, '');
@@ -1251,8 +1049,8 @@ var utils = require('../utils');
 var handleSelectedFile = exports.handleSelectedFile = (function() {
 
     var running = false;
-	localStorage.setItem('currentlyDisplaying', false);
-	
+    localStorage.setItem('currentlyDisplaying', false);
+
     return function(token, file) {
 
     var currentlyDisplaying = JSON.parse(localStorage.getItem('currentlyDisplaying'));
@@ -1263,12 +1061,6 @@ var handleSelectedFile = exports.handleSelectedFile = (function() {
     // }
 
     $.publish('clearscreen');
-	$('#translation textarea').val('');     	 // L.R.
-	ttsChunks.length = 0;						 // L.R.
-	var ttsAudio = $('.audio-tts').get(0);		 // L.R.
-	ttsAudio.pause();							 // L.R.
-	inputSpeechOn = true;						 // L.R.
-	ttsChunksIndex = 0;							 // L.R.
 
     localStorage.setItem('currentlyDisplaying', true);
     running = true;
@@ -1334,12 +1126,10 @@ var handleSelectedFile = exports.handleSelectedFile = (function() {
           function(evt) {
             console.log('Error reading file: ', evt.message);
             showError('Error: ' + evt.message);
-			inputSpeechOn = false;					 // L.R.
           },
           // On load end
           function() {
             socket.send(JSON.stringify({'action': 'stop'}));
-			inputSpeechOn = false;					 // L.R.
           });
       }, 
         function(evt) {
@@ -1421,29 +1211,21 @@ var effects = require('./effects');
 
 
 var LOOKUP_TABLE = {
-  'ar-AR_BroadbandModel': ['ar-AR_Broadband_sample1.wav', 'ar-AR_Broadband_sample2.wav'],
   'en-US_BroadbandModel': ['Us_English_Broadband_Sample_1.wav', 'Us_English_Broadband_Sample_2.wav'],
   'en-US_NarrowbandModel': ['Us_English_Narrowband_Sample_1.wav', 'Us_English_Narrowband_Sample_2.wav'],
   'es-ES_BroadbandModel': ['Es_ES_spk24_16khz.wav', 'Es_ES_spk19_16khz.wav'],
   'es-ES_NarrowbandModel': ['Es_ES_spk24_8khz.wav', 'Es_ES_spk19_8khz.wav'],
   'ja-JP_BroadbandModel': ['sample-Ja_JP-wide1.wav', 'sample-Ja_JP-wide2.wav'],
-  'ja-JP_NarrowbandModel': ['sample-Ja_JP-narrow3.wav', 'sample-Ja_JP-narrow4.wav'],
-  'pt-BR_BroadbandModel': ['pt-BR_Sample1-16KHz.wav', 'pt-BR_Sample2-16KHz.wav']
+  'ja-JP_NarrowbandModel': ['sample-Ja_JP-narrow3.wav', 'sample-Ja_JP-narrow4.wav']
 };
 
 var playSample = (function() {
 
   var running = false;
   localStorage.setItem('currentlyDisplaying', false);
-  
+
   return function(token, imageTag, iconName, url, callback) {
-	$('#translation textarea').val('');     	 // L.R.
-	ttsChunks.length = 0;						 // L.R.
-	var ttsAudio = $('.audio-tts').get(0);		 // L.R.
-	ttsAudio.pause();							 // L.R.
-	inputSpeechOn = true;						 // L.R.
-	ttsChunksIndex = 0;							 // L.R.
-	
+
     $.publish('clearscreen');
 
     var currentlyDisplaying = JSON.parse(localStorage.getItem('currentlyDisplaying'));
@@ -1520,7 +1302,6 @@ var playSample = (function() {
             effects.stopToggleImage(timer, imageTag, iconName);
             effects.restoreImage(imageTag, iconName);
             localStorage.getItem('currentlyDisplaying', false);
-			inputSpeechOn = false; // L.R.
           }
         );
       };
@@ -1573,6 +1354,7 @@ exports.initRecordButton = function(ctx) {
   var recordButton = $('#recordButton');
 
   recordButton.click((function() {
+
     var running = false;
     var token = ctx.token;
     var micOptions = {
@@ -1600,30 +1382,21 @@ exports.initRecordButton = function(ctx) {
             console.log(msg);
             showError(msg);
             running = false;
-			inputSpeechOn = false;						 // L.R.
           } else {
             recordButton.css('background-color', '#d74108');
             recordButton.find('img').attr('src', 'images/stop.svg');
             console.log('starting mic');
             mic.record();
             running = true;
-			$('#translation textarea').val('');     	 // L.R.
-			ttsChunks.length = 0;						 // L.R.
-			var ttsAudio = $('.audio-tts').get(0);		 // L.R.
-			ttsAudio.pause();							 // L.R.
-			inputSpeechOn = true;						 // L.R.
-			ttsChunksIndex = 0;							 // L.R.
           }
         });
-      } 
-	  else {
+      } else {
         console.log('Stopping microphone, sending stop action message');
         recordButton.removeAttr('style');
         recordButton.find('img').attr('src', 'images/microphone.svg');
         $.publish('hardsocketstop');
         mic.stop();
         running = false;
-		inputSpeechOn = false;						 	 // L.R.
       }
     }
   })());
@@ -1651,31 +1424,6 @@ exports.initSelectModel = function(ctx) {
       )
   });
 
-  function onChooseTargetLanguageClick() {
-  	var currentModel = localStorage.getItem('currentModel') || 'en-US_BroadbandModel';
-	var list = $("#dropdownMenuTargetLanguage");
-	list.empty();
-	if(currentModel == 'en-US_BroadbandModel') {
-		list.append("<li role='presentation'><a role='menuitem' tabindex='0'>French</a></li>");
-		list.append("<li role='presentation'><a role='menuitem' tabindex='1'>Portuguese</a></li>");
-		list.append("<li role='presentation'><a role='menuitem' tabindex='2'>Spanish</a></li>");
-		list.append("<li role='presentation'><a role='menuitem' tabindex='3'>Japanese</a></li>");    // activated Japanese model by Taiji
-	}
-	else if(currentModel == 'ar-AR_BroadbandModel') { 
-		list.append("<li role='presentation'><a role='menuitem' tabindex='0'>English</a></li>");
-	}
-	else if(currentModel == 'es-ES_BroadbandModel') { 
-		list.append("<li role='presentation'><a role='menuitem' tabindex='0'>English</a></li>");
-	}
-	else if(currentModel == 'pt-BR_BroadbandModel') { 
-		list.append("<li role='presentation'><a role='menuitem' tabindex='0'>English</a></li>");
-	}
-	else if(currentModel == 'ja-JP_BroadbandModel') { 
-		list.append("<li role='presentation'><a role='menuitem' tabindex='0'>English</a></li>");    // activated Japanese model by Taiji
-	}
-	
-  }
-  
   $("#dropdownMenuList").click(function(evt) {
     evt.preventDefault();
     evt.stopPropagation();
@@ -1683,43 +1431,11 @@ exports.initSelectModel = function(ctx) {
     var newModelDescription = $(evt.target).text();
     var newModel = $(evt.target).data('model');
     $('#dropdownMenuDefault').empty().text(newModelDescription);
-	$('#dropdownMenuTargetLanguageDefault').text("Choose Target Language");
-	$("#dropdownMenuTargetLanguage").empty();
     $('#dropdownMenu1').dropdown('toggle');
     localStorage.setItem('currentModel', newModel);
-	
-	// HACK: just for now because these 3 source languages have only 1 target language, which is English
-	if( newModel == "ar-AR_BroadbandModel" ||
-		newModel == "pt-BR_BroadbandModel" ||
-		newModel == "ja-JP_BroadbandModel" ||    // activated Japanese model by Taiji
-		newModel == "es-ES_BroadbandModel") {
-		$('#dropdownMenuTargetLanguageDefault').text("English");
-	}
-
     ctx.currentModel = newModel;
     initPlaySample(ctx);
     $.publish('clearscreen');
-  });
-  
-  $("#dropdownMenuInput").click(function(evt) {
-	onChooseTargetLanguageClick();
-  });
-  
-  $("#dropdownMenuTargetLanguageDefault").click(function(evt) {
-	onChooseTargetLanguageClick();
-  });
-
-  function isSelectedlanguageValid(lang) {
-	if(lang == "English" || lang == "French" || lang == "Spanish" || lang == "Portuguese" || lang == "Japanese")    // activated Japanese model by Taiji
-		return true;
-	return false;
-  }
-  
-  $("#dropdownMenuTargetLanguage").click(function(evt) {
-    var lang = $(evt.target).text();
-	if(isSelectedlanguageValid(lang) == false) return;
-	$('#dropdownMenuTargetLanguageDefault').text(lang);
-    console.log('Changed target language to ', lang);
   });
 
 }
